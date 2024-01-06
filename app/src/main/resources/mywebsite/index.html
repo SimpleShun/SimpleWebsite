@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SimpleShun</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  </head>
+<body>
+    <audio autoplay loop>
+      <source src="/song" type="audio/mp3" >
+    </audio>
+    <div class="topbar">
+      <h1> 
+        <i>SimpleShun</i>
+      </h1>
+      <span class="quote"><i>-- Don't think Do !! --</i></span>
+    </div>
+    <div class="navbar">
+      <span class="linkbut"
+        hx-get="/about" 
+        hx-target=".main" 
+        hx-swap="innerHTML" 
+        hx-trigger="load,click"
+        hx-select=".about">Home</span>
+      <span class="linkbut"
+        hx-get="/draw"
+        hx-target=".main" 
+        hx-trigger="click"
+        hx-select=".images"
+        hx-swap="innerHTML">Images</span>
+      <span class="linkbut"
+        hx-get="/goal" 
+        hx-target=".main" 
+        hx-swap="innerHTML" 
+        hx-trigger="click"
+        hx-select=".improve">Goals</span>
+    </div>
+    <div class="fcontainer">
+      <div class="main">
+        HTMX
+      </div>
+    </div>
+    <footer>
+      <p>The music on the background is Maya's theme from Persona2 BTW</p>
+      <a href="https://wiby.me" target="_blank">
+        <img src="https://wiby.me/about/wiby.gif" alt="Wiby"></a>
+      <a href="https://sadgrl.online/" target="_blank">
+        <img src="https://sadgrl.online/assets/images/buttons/sadgrlonline.gif"></a>
+    </footer>
+</body>
+</html>

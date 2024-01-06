@@ -1,0 +1,46 @@
+*{
+	text-align: center;
+	background-color: black;
+	color: white;
+	padding: 0px;
+}
+.topbar{
+	text-align: center;
+	padding: 0px;
+	border: white solid 1px ;
+
+}
+.navbar{
+	border: white solid 1px ;
+	padding: 6px;
+	font-size: 20px;
+}
+.main{
+	border: white solid 1px ;
+}
+footer{
+	font-size: 13px;
+	border: white solid 1px ;
+	padding-top: 5px;
+}
+.linkbut:hover{
+	background-color: white;
+	color: black;
+	cursor: pointer;
+}
+.linkbut{
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px;
+}
+.quote{
+	display: block;
+	padding-bottom: 5px;
+}
+.fcontainer{
+	display: flex;
+	flex-flow: wrap;
+}
+.fcontainer > div {
+	margin:  auto;
+}
