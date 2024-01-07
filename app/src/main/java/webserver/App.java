@@ -1,5 +1,6 @@
 package webserver;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -43,14 +44,14 @@ class IndexHandler implements HttpHandler{
     public void handle(HttpExchange t){
         System.out.println("issued to "+ t.getRequestURI());
         try {
-            URI u = new URI("/");
             OutputStream os = t.getResponseBody();
-            if(t.getRequestMethod().equals(new String("GET")) && t.getRequestURI().equals(new URI("/"))){
-                Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/index.html");
+            if(t.getRequestMethod().equals("GET") && t.getRequestURI().equals(new URI("/"))){
                 try {
+                    InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/index.html");
                     t.sendResponseHeaders(200,0);
-                    Files.copy(path, os);
+                    io.transferTo(os);
                     os.close();
+                    io.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -65,16 +66,23 @@ class IndexHandler implements HttpHandler{
     }
 }
 
+//handles call to /css
 class CssHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
-        Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/css/style.css");
         OutputStream cs = t.getResponseBody();
         try {
-            t.sendResponseHeaders(200,0);
-            Files.copy(path, cs);
-            cs.close();
+            if (t.getRequestURI().equals(new URI("/css"))) {
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/css/style.css");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(cs);
+                cs.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                cs.write(new String("<b>Can't touch This !!</b>").getBytes());
+                cs.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,19 +92,18 @@ class CssHandler implements HttpHandler{
 class AboutHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
+        OutputStream os = t.getResponseBody();
         try {
-            URI u = new URI("/about");
-            if(t.getRequestURI().equals(u)){
-                Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/html/swap.html");
-                OutputStream os = t.getResponseBody();
-                try {
-                    t.sendResponseHeaders(200,0);
-                    Files.copy(path, os);
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if(t.getRequestURI().equals(new URI("/about")) && t.getRequestMethod().equals("GET")){
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/html/swap.html");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(os);
+                os.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                os.write(new String("<b>Can't touch This !!</b>").getBytes());
+                os.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,21 +114,20 @@ class AboutHandler implements HttpHandler{
 class DrawHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
-        try {
-            URI u = new URI("/draw");
-            if(t.getRequestURI().equals(u)){
-                Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/html/swap.html");
-                OutputStream os = t.getResponseBody();
-                try {
-                    t.sendResponseHeaders(200,0);
-                    Files.copy(path, os);
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        OutputStream os = t.getResponseBody();
+        try{
+            if(t.getRequestURI().equals(new URI("/draw")) && t.getRequestMethod().equals("GET")){
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/html/swap.html");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(os);
+                os.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                os.write(new String("<b>Can't touch This !!</b>").getBytes());
+                os.close();
             }
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -130,19 +136,18 @@ class DrawHandler implements HttpHandler{
 class GoalHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
+        OutputStream os = t.getResponseBody();
         try {
-            URI u = new URI("/goal");
-            if(t.getRequestURI().equals(u)){
-                Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/html/swap.html");
-                OutputStream os = t.getResponseBody();
-                try {
-                    t.sendResponseHeaders(200,0);
-                    Files.copy(path, os);
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if(t.getRequestURI().equals(new URI("/goal")) && t.getRequestMethod().equals("GET")){
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/html/swap.html");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(os);
+                os.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                os.write(new String("<b>Can't touch This !!</b>").getBytes());
+                os.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,13 +157,19 @@ class GoalHandler implements HttpHandler{
 
 class HandleGrill implements HttpHandler{
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
+        OutputStream os = t.getResponseBody();
         try {
-            t.sendResponseHeaders(200, 0);
-            OutputStream os = t.getResponseBody();
-            Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/th-174333482.jpg");
-            Files.copy(path, os);
-            os.close();
+            if(t.getRequestMethod().equals("GET") && t.getRequestURI().equals(new URI("/grill"))){
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/th-174333482.jpg");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(os);
+                os.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                os.write(new String("<b>Can't touch This !!</b>").getBytes());
+                os.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,13 +178,19 @@ class HandleGrill implements HttpHandler{
 
 class HandleSong implements HttpHandler{
     public void handle(HttpExchange t){
-        System.out.println("issued to "+ t.getRequestURI());
+        OutputStream os = t.getResponseBody();
         try {
-            t.sendResponseHeaders(200, 0);
-            OutputStream os = t.getResponseBody();
-            Path path = Path.of("/home/simpleshun/java/webserver/app/src/main/resources/mywebsite/mayaSad.mp3");
-            Files.copy(path, os);
-            os.close();
+            if(t.getRequestMethod().equals("GET") && t.getRequestURI().equals(new URI("/song"))){
+                InputStream io = getClass().getClassLoader().getResourceAsStream("mywebsite/mayaSad.mp3");
+                t.sendResponseHeaders(200,0);
+                io.transferTo(os);
+                os.close();
+                io.close();
+            }else{
+                t.sendResponseHeaders(404,0);
+                os.write(new String("<b>Can't touch This !!</b>").getBytes());
+                os.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
