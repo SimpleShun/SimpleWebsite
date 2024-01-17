@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = "webserver"
-include("app")
+include("app","handlers")
